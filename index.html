@@ -43,7 +43,7 @@
 
         .buttons-container {
             position: absolute;
-            top: calc(50% + 50px); /* Move buttons below the text */
+            top: calc(50% + 20px); /* Adjusted for better centering */
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
@@ -64,6 +64,15 @@
         button:hover {
             background-color: #0d8dd6;
         }
+
+        .bottom-text {
+            position: absolute;
+            top: calc(50% + 80px); /* Adjusted for proper spacing */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            white-space: nowrap;
+        }
     </style>
     <link rel="icon" type="image/png" href="favicon.ico">
 </head>
@@ -71,12 +80,12 @@
     <canvas></canvas>
     <div class="container">
         <div class="text">npm install @latest</div>
-        <div class="text font-bold">The Beginning Is Near!</div>
     </div>
     <div class="buttons-container">
         <button onclick="toggleReverse();">reVerse</button>
         <button onclick="refreshAnimation();">reFresh</button>
     </div>
+    <div class="bottom-text text font-bold">The Beginning Is Near!</div>
     
     <script>
         var canvas = document.querySelector('canvas'),
