@@ -22,7 +22,7 @@
             transform: translate(-50%, -50%); 
             text-align: center; 
             margin: 20px auto; /* Add buffer */
-            max-width: calc(100% - 40px); /* Full screen width minus buffer */
+            max-width: none; /* Full screen width */
         }
         
         @font-face {
@@ -34,6 +34,7 @@
             font-family: "Minecraftia", sans-serif;
             color: white;
             font-size: 24px;
+            white-space: nowrap; /* Prevent text wrapping */
         }
 
         .font-bold {
