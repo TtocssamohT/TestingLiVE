@@ -26,8 +26,6 @@
         }
 
         button {
-            position: absolute;
-            top: 80%;
             font-family: "Minecraftia", sans-serif;
             background-color: #1DA1F2;
             color: white;
@@ -51,7 +49,7 @@
         <code class="font-bold">The Beginning Is Near! </code>
     </p>
     <button onclick="refreshAnimation();">reFresh</button>
-    <button onclick="toggleReverse();">reVerse</button>
+    <button onclick="toggleReverse();" style="position: absolute; top: 80%; right: 50%; transform: translateX(50%);">reVerse</button>
     <script>
         var canvas = document.querySelector('canvas'),
             ctx = canvas.getContext('2d');
