@@ -44,14 +44,12 @@
 </head>
 <body>
     <canvas></canvas>
+    <button onclick="toggleReverse();" style="position: absolute; top: 80%; left: calc(50% - 85px);">reVerse</button>
+    <button onclick="refreshAnimation();" style="position: absolute; top: 80%; left: calc(50% + 5px + 75px);">reFresh</button>
     <p>
         npm install @latest -g&nbsp;
         <code class="font-bold">The Beginning Is Near! </code>
     </p>
-    <div style="text-align: center;">
-        <button onclick="toggleReverse();">reVerse</button>
-        <button onclick="refreshAnimation();">reFresh</button>
-    </div>
     <script>
         var canvas = document.querySelector('canvas'),
             ctx = canvas.getContext('2d');
