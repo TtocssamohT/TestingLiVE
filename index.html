@@ -86,8 +86,8 @@
             resetDrops();
         }
 
-        var boxSize = 20,
-            columns = canvas.width / boxSize;
+        var boxSize = 20;
+        var columns;
         
         var colors = [
             "#1DA1F2", "#14171A", "#657786", "#AAB8C2", "#E1E8ED", "#F5F8FA",
@@ -101,8 +101,11 @@
             }
         }
         
-        resetDrops();
-        
+        function init() {
+            resizeCanvas();
+            intervalId = setInterval(draw, 75);
+        }
+
         var iterations = 0;
         var isReversed = false;
         var intervalId;
@@ -149,8 +152,8 @@
             intervalId = setInterval(draw, 75);
         }
 
-        intervalId = setInterval(draw, 75);
         window.addEventListener('resize', resizeCanvas);
+        init();
     </script>
 </body>
 </html>
