@@ -28,8 +28,6 @@
         button {
             position: absolute;
             top: 80%;
-            left: 50%;
-            transform: translateX(-50%);
             font-family: "Minecraftia", sans-serif;
             background-color: #1DA1F2;
             color: white;
@@ -53,7 +51,7 @@
         <code class="font-bold">The Beginning Is Near! </code>
     </p>
     <button onclick="refreshAnimation();">reFresh</button>
-    <button onclick="reverseAnimation();">reVerse</button>
+    <button onclick="toggleReverse();">reVerse</button>
     <script>
         var canvas = document.querySelector('canvas'),
             ctx = canvas.getContext('2d');
@@ -75,6 +73,7 @@
         
         var iterations = 0;
         var isReversed = false;
+        var intervalId;
 
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -114,13 +113,14 @@
             intervalId = setInterval(draw, 75);
         }
         
-        function reverseAnimation() {
+        function toggleReverse() {
             isReversed = !isReversed;
+            clearInterval(intervalId);
             iterations = 0;
             intervalId = setInterval(draw, 75);
         }
 
-        var intervalId = setInterval(draw, 75);
+        intervalId = setInterval(draw, 75);
     </script>
 </body>
 </html>
