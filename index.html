@@ -72,7 +72,7 @@
     <div class="buttons-container">
         <button onclick="toggleReverse();">reVerse</button>
         <button onclick="refreshAnimation();">reFresh</button>
-        <button onclick="scatterBoxes();">reDiret</button>
+        <button onclick="scatterBoxes();">scatter</button>
     </div>
     <div class="bottom-text text font-bold">The Beginning Is Near!</div>
     
@@ -154,25 +154,4 @@
         }
 
         function scatterBoxes() {
-            intervalId = setInterval(function() {
-                for (var i = 0; i < drops.length; i++) {
-                    var dx = Math.floor(Math.random() * 3) - 1; // Random change in x direction (-1, 0, 1)
-                    var dy = Math.floor(Math.random() * 3) - 1; // Random change in y direction (-1, 0, 1)
-                    drops[i] += dy;
-                    if (drops[i] * boxSize < 0 || drops[i] * boxSize >= canvas.height) {
-                        drops[i] -= dy; // Undo if box goes out of bounds vertically
-                    }
-                    if (i * boxSize < 0 || i * boxSize >= canvas.width) {
-                        drops[i] -= dx; // Undo if box goes out of bounds horizontally
-                    } else {
-                        drops[i] += dx;
-                    }
-                }
-            }, 75);
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        init();
-    </script>
-</body>
-</html>
+            intervalId = setInterval
