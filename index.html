@@ -8,18 +8,17 @@
         * { margin: 0; padding: 0; }
         body { background: #000; }
         canvas { display: block; position: absolute; top: 0; left: 0; }
-        p, .near { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
         
         @font-face {
             font-family: "Minecraftia";
             src: url("public/Minecraftia-Regular.ttf") format("truetype");
         }
 
-        p, .near {
+        p {
             font-family: "Minecraftia", sans-serif;
             color: white;
             font-size: 24px;
-            text-align: center;
         }
 
         .font-bold {
@@ -35,9 +34,6 @@
             font-size: 16px;
             cursor: pointer;
             margin: 5px;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
         }
 
         button:hover {
@@ -48,14 +44,14 @@
 </head>
 <body>
     <canvas></canvas>
-    <div class="near">
+    <div class="container">
         <p>
-            npm install @latest<br>
-            <code class="font-bold">The Beginning Is Near! </code>
+            npm install @latest <br>
+            <code class="font-bold">The Beginning Is Near!</code>
         </p>
     </div>
-    <button onclick="toggleReverse();" style="left: calc(50% - 85px);">reVerse</button>
-    <button onclick="refreshAnimation();" style="left: calc(50% + 5px + 75px);">reFresh</button>
+    <button onclick="toggleReverse();">reVerse</button>
+    <button onclick="refreshAnimation();">reFresh</button>
     
     <script>
         var canvas = document.querySelector('canvas'),
