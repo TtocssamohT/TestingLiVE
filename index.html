@@ -72,6 +72,7 @@
     <div class="buttons-container">
         <button onclick="toggleReverse();">reVerse</button>
         <button onclick="refreshAnimation();">reFresh</button>
+        <button onclick="scatterBoxes();">reDirection</button>
     </div>
     <div class="bottom-text text font-bold">The Beginning Is Near!</div>
     
@@ -150,6 +151,12 @@
             clearInterval(intervalId);
             iterations = 0;
             intervalId = setInterval(draw, 75);
+        }
+
+        function scatterBoxes() {
+            for (var i = 0; i < drops.length; i++) {
+                drops[i] = Math.floor(Math.random() * canvas.height / boxSize);
+            }
         }
 
         window.addEventListener('resize', resizeCanvas);
