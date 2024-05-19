@@ -154,9 +154,11 @@
         }
 
         function scatterBoxes() {
-            for (var i = 0; i < drops.length; i++) {
-                drops[i] = Math.floor(Math.random() * canvas.height / boxSize);
-            }
+            intervalId = setInterval(function() {
+                for (var i = 0; i < drops.length; i++) {
+                    drops[i] = Math.floor(Math.random() * canvas.height / boxSize);
+                }
+            }, 75);
         }
 
         window.addEventListener('resize', resizeCanvas);
