@@ -29,14 +29,15 @@
             position: absolute;
             top: 80%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             font-family: "Minecraftia", sans-serif;
             background-color: #1DA1F2;
             color: white;
-            border: none;
+            border: 2px solid white;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            margin: 5px;
         }
 
         button:hover {
@@ -52,6 +53,7 @@
         <code class="font-bold">The Beginning Is Near! </code>
     </p>
     <button onclick="location.reload();">reFresh</button>
+    <button onclick="reverseAnimation();">reVerse</button>
     <script>
         var canvas = document.querySelector('canvas'),
             ctx = canvas.getContext('2d');
@@ -72,7 +74,8 @@
         }
         
         var iterations = 0;
-        
+        var isReversed = false;
+
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, .1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -82,9 +85,17 @@
                 ctx.fillRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
                 ctx.strokeStyle = '#000';
                 ctx.strokeRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
-                drops[i]--;
-                if (drops[i] * boxSize < 0 && Math.random() > 0.95) {
-                    drops[i] = Math.floor(canvas.height / boxSize);
+
+                if (isReversed) {
+                    drops[i]++;
+                    if (drops[i] * boxSize > canvas.height && Math.random() > 0.95) {
+                        drops[i] = 0;
+                    }
+                } else {
+                    drops[i]--;
+                    if (drops[i] * boxSize < 0 && Math.random() > 0.95) {
+                        drops[i] = Math.floor(canvas.height / boxSize);
+                    }
                 }
             }
             iterations++;
@@ -93,6 +104,12 @@
             }
         }
         
+        function reverseAnimation() {
+            isReversed = !isReversed;
+            iterations = 0;
+            intervalId = setInterval(draw, 75);
+        }
+
         var intervalId = setInterval(draw, 75);
     </script>
 </body>
