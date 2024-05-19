@@ -30,17 +30,22 @@
             src: url("public/Minecraftia-Regular.ttf") format("truetype");
         }
 
-        p {
+        .text {
             font-family: "Minecraftia", sans-serif;
             color: white;
             font-size: 24px;
             white-space: nowrap; /* Prevent text wrapping */
         }
 
+        .font-bold {
+            font-weight: bold;
+        }
+
         .buttons-container {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            top: calc(50% + 50px); /* Move buttons below the text */
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 100%;
             text-align: center;
         }
@@ -59,20 +64,14 @@
         button:hover {
             background-color: #0d8dd6;
         }
-
-        .font-bold {
-            font-weight: bold;
-        }
     </style>
     <link rel="icon" type="image/png" href="favicon.ico">
 </head>
 <body>
     <canvas></canvas>
     <div class="container">
-        <p>
-            npm install @latest <br>
-            <code class="font-bold">The Beginning Is Near!</code>
-        </p>
+        <div class="text">npm install @latest</div>
+        <div class="text font-bold">The Beginning Is Near!</div>
     </div>
     <div class="buttons-container">
         <button onclick="toggleReverse();">reVerse</button>
