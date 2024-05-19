@@ -9,10 +9,11 @@
         body { 
             background: #000;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
+            overflow: hidden;
         }
         canvas { 
             position: absolute; 
@@ -23,10 +24,14 @@
             z-index: -1; /* Ensure the canvas is behind the content */
         }
         .container, .buttons-container, .bottom-text {
-            margin-bottom: 20px; /* Add space between elements */
             text-align: center;
+            margin-bottom: 20px;
         }
-        
+        .buttons-container {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
         @font-face {
             font-family: "Minecraftia";
             src: url("public/Minecraftia-Regular.ttf") format("truetype");
@@ -51,7 +56,6 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            margin: 5px;
         }
 
         button:hover {
@@ -75,9 +79,13 @@
         var canvas = document.querySelector('canvas'),
             ctx = canvas.getContext('2d');
         
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            columns = Math.floor(canvas.width / boxSize);
+            resetDrops();
+        }
+
         var boxSize = 20,
             columns = canvas.width / boxSize;
         
@@ -86,9 +94,14 @@
         ];
         
         var drops = [];
-        for (var i = 0; i < columns; i++) {
-            drops[i] = Math.floor(canvas.height / boxSize);
+        function resetDrops() {
+            drops = [];
+            for (var i = 0; i < columns; i++) {
+                drops[i] = Math.floor(canvas.height / boxSize);
+            }
         }
+        
+        resetDrops();
         
         var iterations = 0;
         var isReversed = false;
@@ -125,10 +138,7 @@
         function refreshAnimation() {
             clearInterval(intervalId);
             iterations = 0;
-            drops = [];
-            for (var i = 0; i < columns; i++) {
-                drops[i] = Math.floor(canvas.height / boxSize);
-            }
+            resetDrops();
             intervalId = setInterval(draw, 75);
         }
         
@@ -140,6 +150,7 @@
         }
 
         intervalId = setInterval(draw, 75);
+        window.addEventListener('resize', resizeCanvas);
     </script>
 </body>
 </html>
