@@ -140,10 +140,6 @@
                     }
                 }
             }
-            iterations++;
-            if (iterations >= canvas.height / boxSize) {
-                clearInterval(intervalId);
-            }
         }
         
         function refreshAnimation() {
@@ -156,25 +152,23 @@
         function toggleReverse() {
             isReversed = !isReversed;
             clearInterval(intervalId);
-            iterations = 0;
             intervalId = setInterval(draw, 75);
         }
 
         function scatterBoxes() {
             clearInterval(intervalId);
-            iterations = 0;
             for (var i = 0; i < positions.length; i++) {
                 velocities[i] = {
-                    vx: (Math.random() - 0.5) * 2, // Random velocity in x direction
-                    vy: (Math.random() - 0.5) * 2  // Random velocity in y direction
+                    vx: (Math.random() - 0.5) * 4, // Random velocity in x direction
+                    vy: (Math.random() - 0.5) * 4  // Random velocity in y direction
                 };
             }
             intervalId = setInterval(function() {
                 ctx.fillStyle = 'rgba(0, 0, 0, .1)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 for (var i = 0; i < positions.length; i++) {
-                    positions[i].x += velocities[i].vx * boxSize / 2;
-                    positions[i].y += velocities[i].vy * boxSize / 2;
+                    positions[i].x += velocities[i].vx;
+                    positions[i].y += velocities[i].vy;
 
                     // Ensure the boxes stay within the bounds of the canvas
                     if (positions[i].x < 0) positions[i].x = 0;
@@ -187,10 +181,6 @@
                     ctx.fillRect(positions[i].x, positions[i].y, boxSize, boxSize);
                     ctx.strokeStyle = '#000';
                     ctx.strokeRect(positions[i].x, positions[i].y, boxSize, boxSize);
-                }
-                iterations++;
-                if (iterations >= canvas.height / boxSize) {
-                    clearInterval(intervalId);
                 }
             }, 75);
         }
