@@ -95,10 +95,17 @@
         ];
         
         var drops = [];
+        var positions = [];
+        var velocities = [];
+        
         function resetDrops() {
             drops = [];
+            positions = [];
+            velocities = [];
             for (var i = 0; i < columns; i++) {
                 drops[i] = Math.floor(canvas.height / boxSize);
+                positions[i] = { x: i * boxSize, y: drops[i] * boxSize }; // Track positions
+                velocities[i] = { vx: 0, vy: 0 }; // Initialize velocities
             }
         }
         
@@ -114,22 +121,22 @@
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, .1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            for (var i = 0; i < drops.length; i++) {
-                var colorIndex = (drops[i] + i) % colors.length;
+            for (var i = 0; i < positions.length; i++) {
+                var colorIndex = (positions[i].y / boxSize + i) % colors.length;
                 ctx.fillStyle = colors[colorIndex];
-                ctx.fillRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
+                ctx.fillRect(positions[i].x, positions[i].y, boxSize, boxSize);
                 ctx.strokeStyle = '#000';
-                ctx.strokeRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
+                ctx.strokeRect(positions[i].x, positions[i].y, boxSize, boxSize);
 
                 if (isReversed) {
-                    drops[i]++;
-                    if (drops[i] * boxSize > canvas.height && Math.random() > 0.95) {
-                        drops[i] = 0;
+                    positions[i].y += boxSize;
+                    if (positions[i].y > canvas.height && Math.random() > 0.95) {
+                        positions[i].y = 0;
                     }
                 } else {
-                    drops[i]--;
-                    if (drops[i] * boxSize < 0 && Math.random() > 0.95) {
-                        drops[i] = Math.floor(canvas.height / boxSize);
+                    positions[i].y -= boxSize;
+                    if (positions[i].y < 0 && Math.random() > 0.95) {
+                        positions[i].y = Math.floor(canvas.height / boxSize) * boxSize;
                     }
                 }
             }
@@ -156,20 +163,30 @@
         function scatterBoxes() {
             clearInterval(intervalId);
             iterations = 0;
-            resetDrops();
+            for (var i = 0; i < positions.length; i++) {
+                velocities[i] = {
+                    vx: (Math.random() - 0.5) * 2, // Random velocity in x direction
+                    vy: (Math.random() - 0.5) * 2  // Random velocity in y direction
+                };
+            }
             intervalId = setInterval(function() {
-                for (var i = 0; i < drops.length; i++) {
-                    var dx = Math.floor(Math.random() * 3) - 1; // Random change in x direction (-1, 0, 1)
-                    var dy = Math.floor(Math.random() * 3) - 1; // Random change in y direction (-1, 0, 1)
-                    drops[i] += dy;
-                    if (drops[i] * boxSize < 0 || drops[i] * boxSize >= canvas.height) {
-                        drops[i] -= dy; // Undo if box goes out of bounds vertically
-                    }
-                    if (i * boxSize < 0 || i * boxSize >= canvas.width) {
-                        drops[i] -= dx; // Undo if box goes out of bounds horizontally
-                    } else {
-                        drops[i] += dx;
-                    }
+                ctx.fillStyle = 'rgba(0, 0, 0, .1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for (var i = 0; i < positions.length; i++) {
+                    positions[i].x += velocities[i].vx * boxSize;
+                    positions[i].y += velocities[i].vy * boxSize;
+
+                    // Ensure the boxes stay within the bounds of the canvas
+                    if (positions[i].x < 0) positions[i].x = 0;
+                    if (positions[i].x > canvas.width - boxSize) positions[i].x = canvas.width - boxSize;
+                    if (positions[i].y < 0) positions[i].y = 0;
+                    if (positions[i].y > canvas.height - boxSize) positions[i].y = canvas.height - boxSize;
+
+                    var colorIndex = (positions[i].y / boxSize + i) % colors.length;
+                    ctx.fillStyle = colors[colorIndex];
+                    ctx.fillRect(positions[i].x, positions[i].y, boxSize, boxSize);
+                    ctx.strokeStyle = '#000';
+                    ctx.strokeRect(positions[i].x, positions[i].y, boxSize, boxSize);
                 }
             }, 75);
         }
