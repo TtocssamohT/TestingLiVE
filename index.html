@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>reFresh • reVerse • reDirect</title>
-    <head>
-    <link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
-    <link rel="shortcut icon" href="/public/favicon.svg" type="image/svg+xml">
-    </head>
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -114,27 +109,32 @@
 
         var iterations = 0;
         var isReversed = false;
+        var isScattered = false;
         var intervalId;
 
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, .1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            for (var i = 0; i < drops.length; i++) {
-                var colorIndex = (drops[i] + i) % colors.length;
-                ctx.fillStyle = colors[colorIndex];
-                ctx.fillRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
-                ctx.strokeStyle = '#000';
-                ctx.strokeRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
+            if (isScattered) {
+                scatterBoxes();
+            } else {
+                for (var i = 0; i < drops.length; i++) {
+                    var colorIndex = (drops[i] + i) % colors.length;
+                    ctx.fillStyle = colors[colorIndex];
+                    ctx.fillRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
+                    ctx.strokeStyle = '#000';
+                    ctx.strokeRect(i * boxSize, drops[i] * boxSize, boxSize, boxSize);
 
-                if (isReversed) {
-                    drops[i]++;
-                    if (drops[i] * boxSize > canvas.height && Math.random() > 0.95) {
-                        drops[i] = 0;
-                    }
-                } else {
-                    drops[i]--;
-                    if (drops[i] * boxSize < 0 && Math.random() > 0.95) {
-                        drops[i] = Math.floor(canvas.height / boxSize);
+                    if (isReversed) {
+                        drops[i]++;
+                        if (drops[i] * boxSize > canvas.height && Math.random() > 0.95) {
+                            drops[i] = 0;
+                        }
+                    } else {
+                        drops[i]--;
+                        if (drops[i] * boxSize < 0 && Math.random() > 0.95) {
+                            drops[i] = Math.floor(canvas.height / boxSize);
+                        }
                     }
                 }
             }
@@ -158,24 +158,25 @@
             intervalId = setInterval(draw, 75);
         }
 
-function scatterBoxes() {
-    clearInterval(intervalId);
-    intervalId = setInterval(function() {
-        for (var i = 0; i < drops.length; i++) {
-            var dx = Math.floor(Math.random() * 3) - 1; // Random change in x direction (-1, 0, 1)
-            var dy = Math.floor(Math.random() * 3) - 1; // Random change in y direction (-1, 0, 1)
-            drops[i] += dy;
-            if (drops[i] * boxSize < 0 || drops[i] * boxSize >= canvas.height) {
-                drops[i] -= dy; // Undo if box goes out of bounds vertically
+        function scatterBoxes() {
+            isScattered = true;
+            for (var i = 0; i < drops.length; i++) {
+                var dx = Math.floor(Math.random() * 3) - 1; // Random change in x direction (-1, 0, 1)
+                var dy = Math.floor(Math.random() * 3) - 1; // Random change in y direction (-1, 0, 1)
+                drops[i] += dy;
+                if (drops[i] * boxSize < 0 || drops[i] * boxSize >= canvas.height) {
+                    drops[i] -= dy; // Undo if box goes out of bounds vertically
+                }
+                if (i * boxSize < 0 || i * boxSize >= canvas.width) {
+                    drops[i] -= dx; // Undo if box goes out of bounds horizontally
+                } else {
+                    drops[i] += dx;
+                }
             }
-            if (i * boxSize < 0 || i * boxSize >= canvas.width) {
-                drops[i] -= dx; // Undo if box goes out of bounds horizontally
-            } else {
-                drops[i] += dx;
-            }
+            setTimeout(function() {
+                isScattered = false;
+            }, 1000); // Reset after 1 second
         }
-    }, 75);
-}
 
         window.addEventListener('resize', resizeCanvas);
         init();
