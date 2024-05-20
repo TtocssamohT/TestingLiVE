@@ -67,7 +67,7 @@
 <body>
     <canvas></canvas>
     <div class="container">
-        <div class="text">npm install @latest -g</div>
+        <div class="text">-npm install @latest -g</div>
     </div>
     <div class="buttons-container">
         <button onclick="toggleReverse();">reVerse</button>
@@ -179,8 +179,8 @@
             isScattering = true;
             for (var i = 0; i < positions.length; i++) {
                 velocities[i] = {
-                    vx: (Math.random() - 0.5) * 4, // Random velocity in x direction
-                    vy: (Math.random() - 0.5) * 4  // Random velocity in y direction
+                    vx: (Math.random() - 0.5) * 10, // Increase random velocity in x direction for more dynamic movement
+                    vy: (Math.random() - 0.5) * 10  // Increase random velocity in y direction for more dynamic movement
                 };
             }
             intervalId = setInterval(draw, 75);
