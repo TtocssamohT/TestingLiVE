@@ -67,7 +67,7 @@
 <body>
     <canvas></canvas>
     <div class="container">
-        <div class="text">npm install @latest -g</div>
+        <div class="text">npm install @latest</div>
     </div>
     <div class="buttons-container">
         <button onclick="toggleReverse();">reVerse</button>
@@ -170,21 +170,19 @@
             isReversed = !isReversed;
             clearInterval(intervalId);
             isScattering = false;
-            iterations = 0;
             intervalId = setInterval(draw, 75);
         }
 
         function scatterBoxes() {
             clearInterval(intervalId);
             iterations = 0;
-            resetDrops(); // Fill the screen with the pattern
+            isScattering = true;
             for (var i = 0; i < positions.length; i++) {
                 velocities[i] = {
                     vx: (Math.random() - 0.5) * 4, // Random velocity in x direction
                     vy: (Math.random() - 0.5) * 4  // Random velocity in y direction
                 };
             }
-            isScattering = true;
             intervalId = setInterval(draw, 75);
         }
 
