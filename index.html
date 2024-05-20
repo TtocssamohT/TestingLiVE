@@ -87,7 +87,7 @@
             resetDrops();
         }
 
-        var boxSize = 25;
+        var boxSize = 20;
         var columns;
         
         var colors = [
@@ -170,19 +170,21 @@
             isReversed = !isReversed;
             clearInterval(intervalId);
             isScattering = false;
+            iterations = 0;
             intervalId = setInterval(draw, 75);
         }
 
         function scatterBoxes() {
             clearInterval(intervalId);
             iterations = 0;
-            isScattering = true;
+            resetDrops(); // Fill the screen with the pattern
             for (var i = 0; i < positions.length; i++) {
                 velocities[i] = {
                     vx: (Math.random() - 0.5) * 4, // Random velocity in x direction
                     vy: (Math.random() - 0.5) * 4  // Random velocity in y direction
                 };
             }
+            isScattering = true;
             intervalId = setInterval(draw, 75);
         }
 
