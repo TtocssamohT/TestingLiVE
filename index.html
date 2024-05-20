@@ -117,6 +117,7 @@
         var iterations = 0;
         var isReversed = false;
         var intervalId;
+        var isScattering = false;
 
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -128,45 +129,7 @@
                 ctx.strokeStyle = '#000';
                 ctx.strokeRect(positions[i].x, positions[i].y, boxSize, boxSize);
 
-                if (isReversed) {
-                    positions[i].y += boxSize;
-                    if (positions[i].y > canvas.height && Math.random() > 0.95) {
-                        positions[i].y = 0;
-                    }
-                } else {
-                    positions[i].y -= boxSize;
-                    if (positions[i].y < 0 && Math.random() > 0.95) {
-                        positions[i].y = Math.floor(canvas.height / boxSize) * boxSize;
-                    }
-                }
-            }
-        }
-        
-        function refreshAnimation() {
-            clearInterval(intervalId);
-            iterations = 0;
-            resetDrops();
-            intervalId = setInterval(draw, 75);
-        }
-        
-        function toggleReverse() {
-            isReversed = !isReversed;
-            clearInterval(intervalId);
-            intervalId = setInterval(draw, 75);
-        }
-
-        function scatterBoxes() {
-            clearInterval(intervalId);
-            for (var i = 0; i < positions.length; i++) {
-                velocities[i] = {
-                    vx: (Math.random() - 0.5) * 4, // Random velocity in x direction
-                    vy: (Math.random() - 0.5) * 4  // Random velocity in y direction
-                };
-            }
-            intervalId = setInterval(function() {
-                ctx.fillStyle = 'rgba(0, 0, 0, .1)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                for (var i = 0; i < positions.length; i++) {
+                if (isScattering) {
                     positions[i].x += velocities[i].vx;
                     positions[i].y += velocities[i].vy;
 
@@ -175,14 +138,52 @@
                     if (positions[i].x > canvas.width - boxSize) positions[i].x = canvas.width - boxSize;
                     if (positions[i].y < 0) positions[i].y = 0;
                     if (positions[i].y > canvas.height - boxSize) positions[i].y = canvas.height - boxSize;
-
-                    var colorIndex = (positions[i].y / boxSize + i) % colors.length;
-                    ctx.fillStyle = colors[colorIndex];
-                    ctx.fillRect(positions[i].x, positions[i].y, boxSize, boxSize);
-                    ctx.strokeStyle = '#000';
-                    ctx.strokeRect(positions[i].x, positions[i].y, boxSize, boxSize);
+                } else {
+                    if (isReversed) {
+                        positions[i].y += boxSize;
+                        if (positions[i].y > canvas.height && Math.random() > 0.95) {
+                            positions[i].y = 0;
+                        }
+                    } else {
+                        positions[i].y -= boxSize;
+                        if (positions[i].y < 0 && Math.random() > 0.95) {
+                            positions[i].y = Math.floor(canvas.height / boxSize) * boxSize;
+                        }
+                    }
                 }
-            }, 75);
+            }
+            iterations++;
+            if (!isScattering && iterations >= canvas.height / boxSize) {
+                clearInterval(intervalId);
+            }
+        }
+        
+        function refreshAnimation() {
+            clearInterval(intervalId);
+            iterations = 0;
+            resetDrops();
+            isScattering = false;
+            intervalId = setInterval(draw, 75);
+        }
+        
+        function toggleReverse() {
+            isReversed = !isReversed;
+            clearInterval(intervalId);
+            isScattering = false;
+            intervalId = setInterval(draw, 75);
+        }
+
+        function scatterBoxes() {
+            clearInterval(intervalId);
+            iterations = 0;
+            isScattering = true;
+            for (var i = 0; i < positions.length; i++) {
+                velocities[i] = {
+                    vx: (Math.random() - 0.5) * 4, // Random velocity in x direction
+                    vy: (Math.random() - 0.5) * 4  // Random velocity in y direction
+                };
+            }
+            intervalId = setInterval(draw, 75);
         }
 
         window.addEventListener('resize', resizeCanvas);
